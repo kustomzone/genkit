@@ -66,7 +66,7 @@ func findAvailablePort(startPort int) (int, error) {
 			return port, nil
 		}
 	}
-	return -1, fmt.Errorf("could not find an available port in range %d-%d", startPort, startPort+99)
+	return -1, fmt.Errorf("no available port in range %d-%d", startPort, startPort+99)
 }
 
 // startReflectionServer starts the Reflection API server. If the
