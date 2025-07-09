@@ -60,8 +60,7 @@ type reflectionServer struct {
 func findAvailablePort(startPort int) (int, error) {
 	for port := startPort; port < startPort+100; port++ {
 		addr := fmt.Sprintf("127.0.0.1:%d", port)
-		l, err := net.Listen("tcp", addr)
-		if err == nil {
+		if l, err := net.Listen("tcp", addr); err == nil {
 			l.Close()
 			return port, nil
 		}
