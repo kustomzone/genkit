@@ -128,6 +128,18 @@ export function vertexAIVectorSearch(options?: PluginOptions): GenkitPluginV2 {
 
       const actions: ResolvableAction[] = [];
 
+      // Resolve default embedder action if embedder reference is provided
+      let defaultEmbedderAction;
+      if (options?.embedder) {
+        // Import the resolver function for embedders
+        const { defineVertexAIEmbedder } = await import('../embedder.js');
+        const embedderName = options.embedder.name.replace('vertexai/', '');
+        defaultEmbedderAction = defineVertexAIEmbedder(embedderName, authClient, {
+          projectId: options.projectId!,
+          location: options.location!,
+        });
+      }
+
       if (
         options?.vectorSearchOptions &&
         options.vectorSearchOptions.length > 0
@@ -137,6 +149,7 @@ export function vertexAIVectorSearch(options?: PluginOptions): GenkitPluginV2 {
             pluginOptions: options,
             authClient,
             defaultEmbedder: options.embedder,
+            defaultEmbedderAction,
           })
         );
 
@@ -145,6 +158,7 @@ export function vertexAIVectorSearch(options?: PluginOptions): GenkitPluginV2 {
             pluginOptions: options,
             authClient,
             defaultEmbedder: options.embedder,
+            defaultEmbedderAction,
           })
         );
       }

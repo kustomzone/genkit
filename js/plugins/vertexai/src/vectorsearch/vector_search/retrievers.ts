@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { retrieverRef, type RetrieverAction, type z } from 'genkit';
+import { retrieverRef, type RetrieverAction, z, Document } from 'genkit';
 import { retriever } from 'genkit/plugin';
 import { queryPublicEndpoint } from './query_public_endpoint';
 import {
@@ -65,13 +65,16 @@ export function vertexAiRetrievers<EmbedderCustomOptions extends z.ZodTypeAny>(
           );
         }
 
-        const queryEmbedding = (
-          await ai.embed({
-            embedder: embedderReference,
-            options: embedderOptions,
-            content,
-          })
-        )[0].embedding; // Single embedding for text
+        const embedderAction = vectorSearchOption.embedderAction ?? params.defaultEmbedderAction;
+        if (!embedderAction) {
+          throw new Error('Embedder action is required for retrieval');
+        }
+
+        const embedResult = await embedderAction({
+          input: [new Document(content)],
+          options: embedderOptions,
+        });
+        const queryEmbedding = embedResult.embeddings[0].embedding;
 
         const accessToken = await params.authClient.getAccessToken();
 
