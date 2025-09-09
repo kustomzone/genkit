@@ -134,10 +134,14 @@ export function vertexAIVectorSearch(options?: PluginOptions): GenkitPluginV2 {
         // Import the resolver function for embedders
         const { defineVertexAIEmbedder } = await import('../embedder.js');
         const embedderName = options.embedder.name.replace('vertexai/', '');
-        defaultEmbedderAction = defineVertexAIEmbedder(embedderName, authClient, {
-          projectId: options.projectId!,
-          location: options.location!,
-        });
+        defaultEmbedderAction = defineVertexAIEmbedder(
+          embedderName,
+          authClient,
+          {
+            projectId: options.projectId!,
+            location: options.location!,
+          }
+        );
       }
 
       if (

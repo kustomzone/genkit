@@ -77,7 +77,8 @@ export function vertexAiIndexers<EmbedderCustomOptions extends z.ZodTypeAny>(
     }
     const embedderOptions = vectorSearchOption.embedderOptions;
 
-    const embedderAction = vectorSearchOption.embedderAction ?? params.defaultEmbedderAction;
+    const embedderAction =
+      vectorSearchOption.embedderAction ?? params.defaultEmbedderAction;
 
     const indexerAction = indexer(
       {
@@ -100,7 +101,9 @@ export function vertexAiIndexers<EmbedderCustomOptions extends z.ZodTypeAny>(
 
         // Call embedder action directly for each document
         const embedResults = await embedderAction({
-          input: docs.map((doc) => (doc instanceof Document ? doc : new Document(doc))),
+          input: docs.map((doc) =>
+            doc instanceof Document ? doc : new Document(doc)
+          ),
           options: embedderOptions,
         });
 

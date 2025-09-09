@@ -16,7 +16,7 @@
 
 import * as aiplatform from '@google-cloud/aiplatform';
 import { z } from 'genkit';
-import type { EmbedderReference, EmbedderAction } from 'genkit/embedder';
+import type { EmbedderAction, EmbedderReference } from 'genkit/embedder';
 import { CommonRetrieverOptionsSchema, type Document } from 'genkit/retriever';
 import type { GoogleAuth } from 'google-auth-library';
 import type { PluginOptions } from '../types.js';

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { retrieverRef, type RetrieverAction, z, Document } from 'genkit';
+import { Document, retrieverRef, z, type RetrieverAction } from 'genkit';
 import { retriever } from 'genkit/plugin';
 import { queryPublicEndpoint } from './query_public_endpoint';
 import {
@@ -65,7 +65,8 @@ export function vertexAiRetrievers<EmbedderCustomOptions extends z.ZodTypeAny>(
           );
         }
 
-        const embedderAction = vectorSearchOption.embedderAction ?? params.defaultEmbedderAction;
+        const embedderAction =
+          vectorSearchOption.embedderAction ?? params.defaultEmbedderAction;
         if (!embedderAction) {
           throw new Error('Embedder action is required for retrieval');
         }
