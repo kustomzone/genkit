@@ -15,8 +15,7 @@ package-lock.json
 genkit-tools/cli/src/utils/version.ts
 genkit-tools/telemetry-server/src/utils/version.ts
 # MD context files for init:ai-tools
-genkit-tools/cli/src/commands/init-ai-tools/context/nodejs.ts
-genkit-tools/cli/src/commands/init-ai-tools/context/go.ts
+genkit-tools/cli/src/commands/init-ai-tools/context/*.ts
 
 # Sample-specific files
 **/*.env
