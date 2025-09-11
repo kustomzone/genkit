@@ -59,7 +59,7 @@ global.fetch = async (input: RequestInfo | URL, options?: RequestInit) => {
   const url = typeof input === 'string' ? input : input.toString();
   if (url.includes('/api/chat')) {
     // For basic calls without tools, return the end response
-    const body = JSON.parse(options?.body as string || '{}');
+    const body = JSON.parse((options?.body as string) || '{}');
     if (!body.tools || body.tools.length === 0) {
       return new Response(JSON.stringify(MOCK_END_RESPONSE));
     }

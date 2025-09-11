@@ -37,10 +37,10 @@ import {
   type ModelInfo,
   type ToolDefinition,
 } from 'genkit/model';
-import { 
+import {
+  embedder,
   genkitPluginV2,
   model,
-  embedder,
   type GenkitPluginV2,
   type ResolvableAction,
 } from 'genkit/plugin';
@@ -187,11 +187,11 @@ async function createOllamaModel(
           ],
         };
       } else {
-      const txtBody = await res.text();
-      const json = JSON.parse(txtBody);
-      logger.debug(txtBody, 'ollama raw response');
+        const txtBody = await res.text();
+        const json = JSON.parse(txtBody);
+        logger.debug(txtBody, 'ollama raw response');
 
-      message = parseMessage(json, type);
+        message = parseMessage(json, type);
       }
 
       return {
@@ -279,24 +279,32 @@ function ollamaPlugin(params?: OllamaPluginParams): GenkitPluginV2 {
     params.serverAddress = DEFAULT_OLLAMA_SERVER_ADDRESS;
   }
   const serverAddress = params.serverAddress;
-  
+
   return genkitPluginV2({
     name: 'ollama',
     async init() {
       const actions: ResolvableAction[] = [];
-      
+
       if (params?.models) {
         for (const model of params.models) {
-          actions.push(await createOllamaModel(model, serverAddress, params.requestHeaders));
+          actions.push(
+            await createOllamaModel(model, serverAddress, params.requestHeaders)
+          );
         }
       }
-      
+
       if (params?.embedders) {
         for (const embedder of params.embedders) {
-          actions.push(await createOllamaEmbedder(embedder, serverAddress, params.requestHeaders));
+          actions.push(
+            await createOllamaEmbedder(
+              embedder,
+              serverAddress,
+              params.requestHeaders
+            )
+          );
         }
       }
-      
+
       return actions;
     },
     async resolve(actionType, actionName) {
