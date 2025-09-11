@@ -340,10 +340,6 @@ async function listLocalModels(
   return modelResponse.models;
 }
 
-/**
- * Please refer to: https://github.com/ollama/ollama/blob/main/docs/modelfile.md
- * for further information.
- */
 export const OllamaConfigSchema = GenerationCommonConfigSchema.extend({
   temperature: z
     .number()
