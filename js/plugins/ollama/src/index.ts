@@ -260,6 +260,7 @@ async function listActions(
   const models = await listLocalModels(serverAddress, requestHeaders);
   return (
     models
+      // naively filter out embedders, unfortunately there's no better way.
       ?.filter((m) => m.model && !m.model.includes('embed'))
       .map((m) =>
         modelActionMetadata({
@@ -321,7 +322,7 @@ async function listLocalModels(
   serverAddress: string,
   requestHeaders?: RequestHeaders
 ): Promise<LocalModel[]> {
-  // Call the ollama list local models api: https://github.com/ollama/ollama/blob/main/docs/api.md#list-local-models
+  // We call the ollama list local models api: https://github.com/ollama/ollama/blob/main/docs/api.md#list-local-models
   let res;
   try {
     res = await fetch(serverAddress + '/api/tags', {
@@ -340,6 +341,10 @@ async function listLocalModels(
   return modelResponse.models;
 }
 
+/**
+ * Please refer to: https://github.com/ollama/ollama/blob/main/docs/modelfile.md
+ * for further information.
+ */
 export const OllamaConfigSchema = GenerationCommonConfigSchema.extend({
   temperature: z
     .number()
@@ -397,7 +402,7 @@ async function toOllamaEmbedRequest(
 
   const headers = {
     'Content-Type': 'application/json',
-    ...extraHeaders, 
+    ...extraHeaders,
   };
 
   return {
